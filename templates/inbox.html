@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block title %}My Messages{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold text-white mb-6">Message Inbox</h1>
+
+    <div class="bg-gray-800 shadow-xl rounded-lg border border-gray-700">
+        <div class="divide-y divide-gray-700">
+            {% for conv in conversations %}
+            <a href="{{ url_for('conversation', claim_id=conv.claim_id) }}" class="block p-4 hover:bg-gray-700/50 transition duration-200">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="font-semibold text-teal-400">Conversation about: {{ conv.item_title }}</p>
+                        <p class="text-sm text-gray-400">
+                            {% if session.user_id == conv.reporter_id %}
+                                With Claimant: {{ conv.claimant_name }}
+                            {% else %}
+                                With Reporter: {{ conv.reporter_name }}
+                            {% endif %}
+                        </p>
+                    </div>
+                    {% if conv.unread_count > 0 %}
+                    <span class="bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
+                        {{ conv.unread_count }}
+                    </span>
+                    {% endif %}
+                </div>
+            </a>
+            {% else %}
+            <div class="p-6 text-center text-gray-500">
+                You have no active conversations. Conversations appear here after a claim is approved.
+            </div>
+            {% endfor %}
+        </div>
+    </table>
+</div>
+{% endblock %}

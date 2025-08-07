@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}All Notifications{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-white">All Notifications</h1>
+    </div>
+
+    <div class="bg-gray-800 shadow-xl rounded-lg border border-gray-700">
+        <div class="divide-y divide-gray-700">
+            {% for notification in all_notifications %}
+            <a href="{{ url_for('mark_notification_read', notification_id=notification.id) }}" class="block p-4 hover:bg-gray-700/50 transition duration-200 {% if not notification.is_read %}bg-teal-900/20{% endif %}">
+                <div class="flex justify-between items-start">
+                    <p class="text-gray-300">{{ notification.message }}</p>
+                    {% if not notification.is_read %}
+                    <span class="mt-1 block h-2 w-2 rounded-full bg-teal-400 flex-shrink-0" title="Unread"></span>
+                    {% endif %}
+                </div>
+                <p class="text-xs text-gray-500 mt-2">{{ notification.created_at.strftime('%B %d, %Y at %I:%M %p') }}</p>
+            </a>
+            {% else %}
+            <div class="p-12 text-center">
+                <i class="fa fa-bell-slash text-4xl text-gray-600"></i>
+                <p class="mt-4 text-gray-500">You have no notifications yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

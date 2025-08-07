@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+{% block title %}Report an Item{% endblock %}
+
+{% block content %}
+<div class="bg-gray-900 text-white min-h-screen p-4 sm:p-8">
+    <div class="max-w-4xl mx-auto bg-gray-800 rounded-2xl shadow-lg p-8">
+        <h2 class="text-3xl font-bold text-teal-400 mb-6">Report a Lost or Found Item</h2>
+        
+        <!-- Form tag-e enctype="multipart/form-data" add kora hoyeche chobi upload er jonno -->
+        <form action="{{ url_for('report_item') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Title -->
+                <div>
+                    <label for="title" class="block text-sm font-medium text-gray-300 mb-1">Item Title</label>
+                    <input type="text" id="title" name="title" required class="w-full bg-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-teal-500 border-none" placeholder="e.g., Black leather wallet">
+                </div>
+
+                <!-- Item Type -->
+                <div>
+                    <label for="item_type" class="block text-sm font-medium text-gray-300 mb-1">Item Type</label>
+                    <select id="item_type" name="item_type" required class="w-full bg-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-teal-500 border-none">
+                        <option value="lost">I Lost Something</option>
+                        <option value="found">I Found Something</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                <textarea id="description" name="description" rows="4" required class="w-full bg-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-teal-500 border-none" placeholder="Provide details like brand, color, distinguishing marks, etc."></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Category -->
+                <div>
+                    <label for="category_id" class="block text-sm font-medium text-gray-300 mb-1">Category</label>
+                    <select id="category_id" name="category_id" required class="w-full bg-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-teal-500 border-none">
+                        {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Location -->
+                <div>
+                    <label for="location_id" class="block text-sm font-medium text-gray-300 mb-1">Last Seen Location</label>
+                    <select id="location_id" name="location_id" required class="w-full bg-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-teal-500 border-none">
+                        {% for location in locations %}
+                        <option value="{{ location.id }}">{{ location.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Image Upload Section -->
+            <div>
+                <label for="images" class="block text-sm font-medium text-gray-300 mb-1">Upload Images (JPG, PNG, GIF)</label>
+                <!-- URL input er bodole ekhon file upload input -->
+                <input type="file" id="images" name="images" multiple accept="image/png, image/jpeg, image/gif"
+                       class="w-full text-gray-300 bg-gray-700 rounded-lg p-2 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-500 file:text-white hover:file:bg-teal-600">
+            </div>
+
+            <!-- Tags -->
+            <div>
+                <label for="tags" class="block text-sm font-medium text-gray-300 mb-1">Tags</label>
+                <input type="text" id="tags" name="tags" class="w-full bg-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-teal-500 border-none" placeholder="e.g., apple, watch, series7 (comma-separated)">
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="pt-4">
+                <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
+                    Report Item
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

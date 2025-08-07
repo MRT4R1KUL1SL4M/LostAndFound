@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block title %}Conversation about {{ claim_info.item_title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="mb-6">
+        <a href="{{ url_for('inbox') }}" class="inline-flex items-center text-teal-400 hover:text-teal-300">
+            <i class="fa fa-arrow-left mr-2"></i>
+            Back to Inbox
+        </a>
+    </div>
+
+    <div class="bg-gray-800 shadow-xl rounded-lg border border-gray-700">
+        <!-- Header -->
+        <div class="p-4 border-b border-gray-700">
+            <h2 class="text-xl font-bold text-white">Conversation about: {{ claim_info.item_title }}</h2>
+            <p class="text-sm text-gray-400">With: {{ other_user_name }}</p>
+        </div>
+
+        <!-- Messages Area -->
+        <div class="p-6 h-96 overflow-y-auto flex flex-col space-y-4">
+            {% for message in messages %}
+                {% if message.sender_id == session.user_id %}
+                <!-- My Message (Right) -->
+                <div class="flex justify-end">
+                    <div class="bg-teal-600 text-white p-3 rounded-lg max-w-lg">
+                        <p>{{ message.body }}</p>
+                        <div class="text-xs text-teal-200 mt-1 text-right">{{ message.sent_at.strftime('%d %b, %I:%M %p') }}</div>
+                    </div>
+                </div>
+                {% else %}
+                <!-- Other's Message (Left) -->
+                <div class="flex justify-start">
+                    <div class="bg-gray-700 text-gray-300 p-3 rounded-lg max-w-lg">
+                        <p>{{ message.body }}</p>
+                        <div class="text-xs text-gray-500 mt-1">{{ message.sent_at.strftime('%d %b, %I:%M %p') }}</div>
+                    </div>
+                </div>
+                {% endif %}
+            {% else %}
+            <div class="text-center text-gray-500">
+                No messages yet. Start the conversation!
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Message Input Form -->
+        <div class="p-4 border-t border-gray-700 bg-gray-900/50">
+            <form method="POST" action="{{ url_for('conversation', claim_id=claim_info.claim_id) }}">
+                <div class="flex items-center space-x-3">
+                    <textarea name="body" class="flex-grow bg-gray-700 border-gray-600 text-white rounded-lg p-3 focus:ring-2 focus:ring-teal-500 focus:border-transparent" rows="2" placeholder="Type your message..." required></textarea>
+                    <button type="submit" class="bg-teal-600 text-white rounded-full p-3 hover:bg-teal-700 transition">
+                        <i class="fa fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

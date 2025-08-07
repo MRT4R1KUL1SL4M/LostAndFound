@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %}Confirm Account{% endblock %}
+
+{% block content %}
+<div class="min-h-[85vh] flex items-center justify-center p-4 bg-gray-900">
+    <div class="w-full max-w-md">
+        <div class="text-center mb-6">
+            <a href="{{ url_for('index') }}" class="text-5xl font-bold text-teal-400 tracking-wider drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">
+                CampusFind
+            </a>
+        </div>
+        <div class="bg-gray-800 rounded-2xl shadow-2xl p-8 border border-gray-700">
+            <div class="text-center">
+                <h2 class="text-2xl font-bold text-white">Account Found</h2>
+                <p class="text-gray-400 mt-2">A password reset code will be sent to:</p>
+                <p class="text-teal-400 font-semibold mt-2">{{ email }}</p>
+                <p class="text-gray-400 mt-4">Click the button below to receive your code.</p>
+            </div>
+            <form action="{{ url_for('send_code') }}" method="POST" class="mt-8">
+                <div>
+                    <button type="submit"
+                            class="w-full flex justify-center rounded-lg bg-teal-600 px-3 py-3 text-md font-semibold text-white shadow-lg hover:bg-teal-700">
+                        Send Code
+                    </button>
+                </div>
+            </form>
+             <div class="text-center mt-4">
+                <a href="{{ url_for('forgot_password') }}" class="text-sm font-medium text-gray-400 hover:text-teal-300">Not your account?</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

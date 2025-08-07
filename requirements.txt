@@ -1,0 +1,9 @@
+Flask
+Flask-SQLAlchemy
+PyMySQL
+PyYAML
+werkzeug
+Flask-Mail
+gunicorn
+certifi
+Pillow
