@@ -1,193 +1,75 @@
-<!doctype html>
-<html lang="bn">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project ID — Under Construction</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg1: #0f172a; /* dark navy */
-      --bg2: #07103a; /* deeper blue */
-      --accent: #7c3aed; /* violet */
-      --accent-2: #06b6d4; /* teal */
-      --glass: rgba(255,255,255,0.06);
-      --card: rgba(255,255,255,0.03);
-      --muted: rgba(255,255,255,0.6);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-      background: radial-gradient(1200px 600px at 10% 20%, rgba(124,58,237,0.12), transparent),
-                  radial-gradient(900px 500px at 90% 80%, rgba(6,182,212,0.08), transparent),
-                  linear-gradient(180deg,var(--bg1),var(--bg2));
-      color: #fff;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      padding:32px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    .container{
-      width:100%;
-      max-width:960px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:20px;
-      box-shadow: 0 10px 40px rgba(2,6,23,0.6);
-      overflow:hidden;
-      border: 1px solid rgba(255,255,255,0.04);
-      display:grid;
-      grid-template-columns: 1fr 420px;
-      gap:0;
-    }
-
-    /* Left main */
-    .left{
-      padding:48px 56px;
-      position:relative;
-      min-height:420px;
-      background: linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
-    }
-    .logo{
-      font-weight:800;
-      letter-spacing:0.6px;
-      display:inline-flex;
-      align-items:center;
-      gap:12px;
-      margin-bottom:22px;
-    }
-    .logo .dot{
-      width:14px;height:14px;border-radius:4px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
-      box-shadow:0 6px 18px rgba(99,102,241,0.18),0 1px 0 rgba(255,255,255,0.03) inset;
-    }
-    h1{
-      font-size:48px;
-      margin:6px 0 10px 0;
-      line-height:1.02;
-      letter-spacing:-1px;
-    }
-    p.lead{
-      margin:0 0 24px 0;
-      color:var(--muted);
-      font-size:16px;
-      max-width:56ch;
-    }
-
-    .tag{
-      display:inline-block;padding:8px 12px;border-radius:999px;font-weight:600;background:var(--glass);backdrop-filter: blur(6px);
-      border:1px solid rgba(255,255,255,0.03); color:#fff; font-size:13px;
-    }
-
-    /* progress */
-    .progress-wrap{margin-top:18px;}
-    .progress{
-      background:rgba(255,255,255,0.03);
-      height:12px;border-radius:999px;overflow:hidden;width:100%;box-shadow:inset 0 -1px 0 rgba(0,0,0,0.4);
-    }
-    .progress > i{display:block;height:100%;width:56%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));
-      transform-origin:left center;animation:glow 2.8s ease-in-out infinite alternate;
-    }
-    @keyframes glow{from{filter:brightness(0.95)}to{filter:brightness(1.15)}}
-
-    .meta{display:flex;gap:14px;margin-top:14px;flex-wrap:wrap}
-    .meta .item{background:var(--card);padding:10px 14px;border-radius:10px;font-size:13px;color:var(--muted);border:1px solid rgba(255,255,255,0.02)}
-
-    /* Right side */
-    .right{
-      padding:34px;display:flex;flex-direction:column;gap:18px;align-items:center;justify-content:center;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
-    }
-    .card{width:100%;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 6px 20px rgba(2,6,23,0.45)}
-
-    .icon-gear{width:110px;height:110px;border-radius:999px;display:grid;place-items:center;background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
-    .gear{width:62px;height:62px;display:inline-block;position:relative;}
-    .gear:before{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0 6px rgba(255,255,255,0.03), 0 8px 28px rgba(2,6,23,0.55);}
-    .gear svg{display:block;animation:spin 6s linear infinite}
-    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-
-    .links{display:flex;flex-direction:column;gap:8px;margin-top:6px}
-    .links a{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:600;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);}
-
-    .footer-note{font-size:13px;color:var(--muted);text-align:center;margin-top:6px}
-
-    /* Responsive */
-    @media (max-width:880px){
-      .container{grid-template-columns:1fr; padding:0 8px}
-      .left{padding:32px}
-      h1{font-size:36px}
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project ID - Under Construction</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.2rem;
+            color: #ccc;
+        }
+        .progress-container {
+            margin-top: 30px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .progress-bar {
+            height: 20px;
+            width: 90%;
+            background: linear-gradient(90deg, #7c3aed, #06b6d4);
+            text-align: right;
+            padding-right: 10px;
+            line-height: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .contact-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 25px;
+            background-color: #ff6f61;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .contact-btn:hover {
+            background-color: #ff3b2e;
+        }
+        .eta-date {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #aaa;
+        }
+    </style>
 </head>
 <body>
-  <div class="container" role="main" aria-labelledby="title">
-    <section class="left">
-      <div class="logo" aria-hidden="true"><span class="dot"></span><span style="font-size:15px;">WorldClass Labs</span></div>
-      <div class="tag">Project ID: <strong style="margin-left:8px">#PRJ-2034</strong></div>
-      <h1 id="title">Under Construction</h1>
-      <p class="lead">Ei page ta ekhon toyri kora hocche. Amra ei project ti aro sundor, druto, ebong robust vabe deploy korchi. Apnar dhorjo'r jonno dhonnobad — amra shighroi abar fire ashbo.</p>
+    <h1>🚧 Project ID: Under Construction 🚧</h1>
+    <p>This project is being developed by <strong>Tarikul</strong>. Stay tuned for updates!</p>
 
-      <div class="progress-wrap">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-          <small style="color:var(--muted)">Development: 56%</small>
-          <small style="color:var(--muted)">ETA: Sep 15, 2025</small>
-        </div>
-        <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="56">
-          <i></i>
-        </div>
-        <div class="meta">
-          <div class="item">Design: UI/UX</div>
-          <div class="item">Backend: API + DB</div>
-          <div class="item">Status: Alpha</div>
-        </div>
-      </div>
+    <div class="progress-container">
+        <div class="progress-bar">90%</div>
+    </div>
 
-      <div style="position:absolute;right:24px;bottom:22px;font-size:12px;color:var(--muted)">Contact: hello@worldclass.example</div>
-    </section>
+    <p class="eta-date">ETA: 10 Aug 25</p>
 
-    <aside class="right">
-      <div class="card" style="display:flex;flex-direction:column;align-items:center;gap:14px">
-        <div class="icon-gear" aria-hidden="true">
-          <div class="gear">
-            <!-- Minimal gear SVG -->
-            <svg viewBox="0 0 64 64" width="62" height="62" aria-hidden="true">
-              <path fill="none" stroke="white" stroke-opacity="0.9" stroke-width="2" d="M32 42a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"></path>
-              <g stroke="white" stroke-opacity="0.85" stroke-width="2" fill="none">
-                <path d="M58 34l4-6-6-4-2-6-6-2-4-6-6 2-6-4-4 6-6 2-2 6-6 4 4 6-2 6 6 2 2 6 6 4 4-6 6-2 2-6 6-4z"></path>
-              </g>
-            </svg>
-          </div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-weight:700;font-size:18px">শিধুরে কাজ চলছে</div>
-          <div style="font-size:13px;color:var(--muted);margin-top:6px;max-width:220px">আপনি চাইলে আমাদের টিমকে ইমেইল করে আপডেট চাইতে পারেন।</div>
-        </div>
-      </div>
-
-      <div class="card links">
-        <a href="mailto:hello@worldclass.example">Contact Team</a>
-        <a href="#" onclick="alert('Demo link clicked — replace with real link')">Live Preview</a>
-        <a href="#" onclick="alert('Subscribe clicked — replace with form integration')">Subscribe for updates</a>
-      </div>
-
-      <div class="footer-note">© <span id="year"></span> WorldClass Labs • All rights reserved</div>
-    </aside>
-  </div>
-
-  <script>
-    // Small niceties
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Slight animated shimmer across left heading
-    (function(){
-      const h = document.querySelector('.left h1');
-      setInterval(()=>{
-        h.style.textShadow = '0 8px 40px rgba(124,58,237,0.12), 0 2px 8px rgba(6,182,212,0.06)';
-        setTimeout(()=>{h.style.textShadow='none'},700);
-      },2200);
-    })();
-  </script>
+    <a class="contact-btn" href="mailto:mrtarikulislamtarek@gmail.com">Contact Me</a>
 </body>
 </html>
