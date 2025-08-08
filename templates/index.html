@@ -1,298 +1,193 @@
-{% extends "layout.html" %}
-{% block title %}Find What's Lost - CampusFind{% endblock %}
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project ID — Under Construction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: #0f172a; /* dark navy */
+      --bg2: #07103a; /* deeper blue */
+      --accent: #7c3aed; /* violet */
+      --accent-2: #06b6d4; /* teal */
+      --glass: rgba(255,255,255,0.06);
+      --card: rgba(255,255,255,0.03);
+      --muted: rgba(255,255,255,0.6);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(124,58,237,0.12), transparent),
+                  radial-gradient(900px 500px at 90% 80%, rgba(6,182,212,0.08), transparent),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color: #fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:32px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
 
-{% block content %}
-<div class="text-center py-16 md:py-20 bg-gray-800/50 rounded-lg shadow-2xl mb-8 border border-gray-700 bg-gradient-to-br from-gray-800 to-gray-900">
-    <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white" style="text-shadow: 0 2px 10px rgba(0, 255, 255, 0.2);">Lost Something? Found Something?</h1>
-    <p class="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">The central hub for all lost and found items on campus. Start by searching or filtering below.</p>
-</div>
+    .container{
+      width:100%;
+      max-width:960px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:20px;
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,0.04);
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:0;
+    }
 
-<!-- NEW: Announcement Section -->
-{% if announcement %}
-<div class="bg-teal-900/50 border border-teal-500/30 text-teal-200 px-4 py-3 rounded-lg relative mb-8" role="alert">
-    <strong class="font-bold"><i class="fa fa-bullhorn mr-2"></i>Announcement:</strong>
-    <span class="block sm:inline ml-2">{{ announcement.content }}</span>
-</div>
-{% endif %}
+    /* Left main */
+    .left{
+      padding:48px 56px;
+      position:relative;
+      min-height:420px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+    }
+    .logo{
+      font-weight:800;
+      letter-spacing:0.6px;
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:22px;
+    }
+    .logo .dot{
+      width:14px;height:14px;border-radius:4px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      box-shadow:0 6px 18px rgba(99,102,241,0.18),0 1px 0 rgba(255,255,255,0.03) inset;
+    }
+    h1{
+      font-size:48px;
+      margin:6px 0 10px 0;
+      line-height:1.02;
+      letter-spacing:-1px;
+    }
+    p.lead{
+      margin:0 0 24px 0;
+      color:var(--muted);
+      font-size:16px;
+      max-width:56ch;
+    }
 
-<!-- Filters and Items Section -->
-<div class="px-4">
-    <!-- Filter Controls -->
-    <div class="bg-gray-800 p-4 rounded-lg shadow-xl border border-gray-700 mb-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- Keyword Search -->
-            <div class="md:col-span-2 lg:col-span-4">
-                <label for="live-search-input" class="flex items-center text-sm font-medium text-gray-400 mb-2"><i class="fa fa-search w-5 mr-2"></i>Search by Keyword</label>
-                <input type="search" id="live-search-input" name="q" placeholder="Start typing to filter items in real-time..." class="w-full rounded-lg bg-gray-700 border-gray-600 text-white p-3 focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-            </div>
-            <!-- Category Filter -->
-            <div>
-                <label for="category-filter" class="flex items-center text-sm font-medium text-gray-400 mb-2"><i class="fa fa-folder-open w-5 mr-2"></i>Category</label>
-                <select id="category-filter" class="w-full rounded-lg bg-gray-700 border-gray-600 text-white p-3 focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                    <option value="all">All Categories</option>
-                    {% for cat in categories %}
-                    <option value="{{ cat.id }}">{{ cat.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <!-- Location Filter -->
-            <div>
-                <label for="location-filter" class="flex items-center text-sm font-medium text-gray-400 mb-2"><i class="fa fa-map-marker-alt w-5 mr-2"></i>Location</label>
-                <select id="location-filter" class="w-full rounded-lg bg-gray-700 border-gray-600 text-white p-3 focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                    <option value="all">All Locations</option>
-                    {% for loc in locations %}
-                    <option value="{{ loc.id }}">{{ loc.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <!-- Type Filter -->
-            <div>
-                <label class="block text-sm font-medium text-gray-400 mb-2"><i class="fa fa-tags w-5 mr-2 inline"></i>Item Type</label>
-                <div class="flex space-x-2 bg-gray-900/50 p-1 rounded-lg">
-                    <button class="filter-btn active w-full" data-filter="all">All</button>
-                    <button class="filter-btn w-full" data-filter="lost">Lost</button>
-                    <button class="filter-btn w-full" data-filter="found">Found</button>
-                </div>
-            </div>
-            <!-- NEW: Sort By Filter -->
-            <div>
-                <label for="sort-filter" class="flex items-center text-sm font-medium text-gray-400 mb-2"><i class="fa fa-sort-amount-down w-5 mr-2"></i>Sort By</label>
-                <select id="sort-filter" class="w-full rounded-lg bg-gray-700 border-gray-600 text-white p-3 focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-                    <option value="newest">Newest First</option>
-                    <option value="oldest">Oldest First</option>
-                    <option value="title-asc">Title (A-Z)</option>
-                    <option value="title-desc">Title (Z-A)</option>
-                </select>
-            </div>
+    .tag{
+      display:inline-block;padding:8px 12px;border-radius:999px;font-weight:600;background:var(--glass);backdrop-filter: blur(6px);
+      border:1px solid rgba(255,255,255,0.03); color:#fff; font-size:13px;
+    }
+
+    /* progress */
+    .progress-wrap{margin-top:18px;}
+    .progress{
+      background:rgba(255,255,255,0.03);
+      height:12px;border-radius:999px;overflow:hidden;width:100%;box-shadow:inset 0 -1px 0 rgba(0,0,0,0.4);
+    }
+    .progress > i{display:block;height:100%;width:56%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      transform-origin:left center;animation:glow 2.8s ease-in-out infinite alternate;
+    }
+    @keyframes glow{from{filter:brightness(0.95)}to{filter:brightness(1.15)}}
+
+    .meta{display:flex;gap:14px;margin-top:14px;flex-wrap:wrap}
+    .meta .item{background:var(--card);padding:10px 14px;border-radius:10px;font-size:13px;color:var(--muted);border:1px solid rgba(255,255,255,0.02)}
+
+    /* Right side */
+    .right{
+      padding:34px;display:flex;flex-direction:column;gap:18px;align-items:center;justify-content:center;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    }
+    .card{width:100%;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 6px 20px rgba(2,6,23,0.45)}
+
+    .icon-gear{width:110px;height:110px;border-radius:999px;display:grid;place-items:center;background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
+    .gear{width:62px;height:62px;display:inline-block;position:relative;}
+    .gear:before{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0 6px rgba(255,255,255,0.03), 0 8px 28px rgba(2,6,23,0.55);}
+    .gear svg{display:block;animation:spin 6s linear infinite}
+    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+    .links{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+    .links a{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:600;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);}
+
+    .footer-note{font-size:13px;color:var(--muted);text-align:center;margin-top:6px}
+
+    /* Responsive */
+    @media (max-width:880px){
+      .container{grid-template-columns:1fr; padding:0 8px}
+      .left{padding:32px}
+      h1{font-size:36px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-labelledby="title">
+    <section class="left">
+      <div class="logo" aria-hidden="true"><span class="dot"></span><span style="font-size:15px;">WorldClass Labs</span></div>
+      <div class="tag">Project ID: <strong style="margin-left:8px">#PRJ-2034</strong></div>
+      <h1 id="title">Under Construction</h1>
+      <p class="lead">Ei page ta ekhon toyri kora hocche. Amra ei project ti aro sundor, druto, ebong robust vabe deploy korchi. Apnar dhorjo'r jonno dhonnobad — amra shighroi abar fire ashbo.</p>
+
+      <div class="progress-wrap">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <small style="color:var(--muted)">Development: 56%</small>
+          <small style="color:var(--muted)">ETA: Sep 15, 2025</small>
         </div>
-    </div>
-    
-    <h2 class="text-2xl font-bold text-white mb-6">Recently Reported Items</h2>
-    
-    {% if items %}
-    <div id="items-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {% for item in items %}
-        <div class="item-card bg-gray-800 border border-gray-700 rounded-lg shadow-lg overflow-hidden hover:border-teal-500 transition-all duration-300 flex flex-col transform hover:-translate-y-1" 
-             data-type="{{ item.item_type }}" 
-             data-category="{{ item.category_id }}" 
-             data-location="{{ item.location_id }}"
-             data-date="{{ item.reported_at.isoformat() }}"> {# NEW: Data attribute for sorting #}
-            <a href="{{ url_for('item_details', item_id=item.id) }}" class="block relative">
-                <img src="{{ item.main_image or 'https://placehold.co/600x400/1F2937/4B5563?text=No+Image' }}" alt="{{ item.title }}" class="w-full h-48 object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-            </a>
-            <div class="p-4 flex-grow flex flex-col">
-                <div class="flex-grow">
-                    <div class="flex justify-between items-start mb-2">
-                        <h3 class="searchable-title text-lg font-semibold text-white leading-tight">{{ item.title }}</h3>
-                        <span class="text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap
-                            {% if item.item_type == 'lost' %} bg-red-900/50 text-red-300 border border-red-500/30
-                            {% else %} bg-green-900/50 text-green-300 border border-green-500/30 {% endif %}">
-                            {{ item.item_type|capitalize }}
-                        </span>
-                    </div>
-                    <p class="searchable-desc text-gray-400 text-sm mb-4 h-12 overflow-hidden">{{ item.description }}</p>
-                    
-                    <div class="space-y-2 text-sm text-gray-400">
-                        <div class="flex items-center">
-                            <i class="fa fa-folder-open w-5 text-gray-500 mr-2"></i>
-                            <span>{{ item.category_name }}</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fa fa-map-marker-alt w-5 text-gray-500 mr-2"></i>
-                            <span>{{ item.location_name }}</span>
-                        </div>
-                          <div class="flex items-center">
-                            <i class="fa fa-clock w-5 text-gray-500 mr-2"></i>
-                            <span>{{ item.reported_at.strftime('%d %b %Y') }}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="pt-4 mt-4 border-t border-gray-700">
-                    <a href="{{ url_for('item_details', item_id=item.id) }}" class="w-full block text-center font-semibold text-teal-400 hover:text-teal-300">View Details &rarr;</a>
-                </div>
-            </div>
+        <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="56">
+          <i></i>
         </div>
-        {% endfor %}
-    </div>
+        <div class="meta">
+          <div class="item">Design: UI/UX</div>
+          <div class="item">Backend: API + DB</div>
+          <div class="item">Status: Alpha</div>
+        </div>
+      </div>
 
-    <div id="pagination-container" class="flex justify-center items-center mt-10 space-x-2"></div>
+      <div style="position:absolute;right:24px;bottom:22px;font-size:12px;color:var(--muted)">Contact: hello@worldclass.example</div>
+    </section>
 
-    <div id="no-results-message" class="text-center py-16 bg-gray-800 rounded-lg shadow-md border border-gray-700 hidden">
-        <i class="fa fa-search-minus text-5xl text-gray-600 mb-4"></i>
-        <h3 class="text-xl font-semibold text-white">No items match your filter.</h3>
-        <p class="text-gray-500 mt-2">Try a different search term or change the filter.</p>
-    </div>
-    {% else %}
-    <div class="text-center py-16 bg-gray-800 rounded-lg shadow-md border border-gray-700">
-        <i class="fa fa-box-open text-5xl text-gray-600 mb-4"></i>
-        <h3 class="text-xl font-semibold text-white">No items found.</h3>
-        <p class="text-gray-500 mt-2">There are no reported items yet. Be the first to report one!</p>
-    </div>
-    {% endif %}
-</div>
-{% endblock %}
+    <aside class="right">
+      <div class="card" style="display:flex;flex-direction:column;align-items:center;gap:14px">
+        <div class="icon-gear" aria-hidden="true">
+          <div class="gear">
+            <!-- Minimal gear SVG -->
+            <svg viewBox="0 0 64 64" width="62" height="62" aria-hidden="true">
+              <path fill="none" stroke="white" stroke-opacity="0.9" stroke-width="2" d="M32 42a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"></path>
+              <g stroke="white" stroke-opacity="0.85" stroke-width="2" fill="none">
+                <path d="M58 34l4-6-6-4-2-6-6-2-4-6-6 2-6-4-4 6-6 2-2 6-6 4 4 6-2 6 6 2 2 6 6 4 4-6 6-2 2-6 6-4z"></path>
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-weight:700;font-size:18px">শিধুরে কাজ চলছে</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:6px;max-width:220px">আপনি চাইলে আমাদের টিমকে ইমেইল করে আপডেট চাইতে পারেন।</div>
+        </div>
+      </div>
 
-{% block scripts %}
-<style>
-    .filter-btn { padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; color: #9ca3af; transition: all 0.2s ease-in-out; }
-    .filter-btn:hover { background-color: #374151; color: #ffffff; }
-    .filter-btn.active { background-color: #14b8a6; color: #ffffff; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
-    .pagination-btn { padding: 0.6rem 1.1rem; border-radius: 0.5rem; font-weight: 600; color: #9ca3af; transition: all 0.2s ease-in-out; background-color: #374151; }
-    .pagination-btn:hover { background-color: #4b5563; }
-    .pagination-btn.active { background-color: #14b8a6; color: #ffffff; }
-    .pagination-btn:disabled { background-color: #1f2937; color: #4b5563; cursor: not-allowed; }
-    
-    #items-container { transition: opacity 0.2s ease-in-out; }
-    #items-container.is-filtering { opacity: 0; }
-</style>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('live-search-input');
-    const categoryFilter = document.getElementById('category-filter');
-    const locationFilter = document.getElementById('location-filter');
-    const sortFilter = document.getElementById('sort-filter'); // NEW
-    const typeFilterButtons = document.querySelectorAll('.filter-btn');
-    const itemsContainer = document.getElementById('items-container');
-    const noResultsMessage = document.getElementById('no-results-message');
-    const paginationContainer = document.getElementById('pagination-container');
+      <div class="card links">
+        <a href="mailto:hello@worldclass.example">Contact Team</a>
+        <a href="#" onclick="alert('Demo link clicked — replace with real link')">Live Preview</a>
+        <a href="#" onclick="alert('Subscribe clicked — replace with form integration')">Subscribe for updates</a>
+      </div>
 
-    if (!itemsContainer) return;
+      <div class="footer-note">© <span id="year"></span> WorldClass Labs • All rights reserved</div>
+    </aside>
+  </div>
 
-    const allItemCards = Array.from(itemsContainer.getElementsByClassName('item-card'));
-    let filteredItems = [...allItemCards];
-    let currentPage = 1;
-    const ITEMS_PER_PAGE = 8;
+  <script>
+    // Small niceties
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-    function applyFiltersAndSort() {
-        itemsContainer.classList.add('is-filtering');
-
-        setTimeout(() => {
-            // Step 1: Filtering
-            const searchText = searchInput.value.toLowerCase().trim();
-            const selectedCategory = categoryFilter.value;
-            const selectedLocation = locationFilter.value;
-            const activeTypeFilter = document.querySelector('.filter-btn.active').dataset.filter;
-
-            filteredItems = allItemCards.filter(card => {
-                const title = card.querySelector('.searchable-title').textContent.toLowerCase();
-                const description = card.querySelector('.searchable-desc').textContent.toLowerCase();
-                const type = card.dataset.type;
-                const category = card.dataset.category;
-                const location = card.dataset.location;
-
-                const textMatch = (title.includes(searchText) || description.includes(searchText));
-                const typeMatch = (activeTypeFilter === 'all' || type === activeTypeFilter);
-                const categoryMatch = (selectedCategory === 'all' || category === selectedCategory);
-                const locationMatch = (selectedLocation === 'all' || location === selectedLocation);
-
-                return textMatch && typeMatch && categoryMatch && locationMatch;
-            });
-
-            // Step 2: Sorting
-            const sortValue = sortFilter.value;
-            filteredItems.sort((a, b) => {
-                if (sortValue === 'newest') {
-                    return new Date(b.dataset.date) - new Date(a.dataset.date);
-                }
-                if (sortValue === 'oldest') {
-                    return new Date(a.dataset.date) - new Date(b.dataset.date);
-                }
-                const titleA = a.querySelector('.searchable-title').textContent.toLowerCase();
-                const titleB = b.querySelector('.searchable-title').textContent.toLowerCase();
-                if (sortValue === 'title-asc') {
-                    return titleA.localeCompare(titleB);
-                }
-                if (sortValue === 'title-desc') {
-                    return titleB.localeCompare(titleA);
-                }
-                return 0;
-            });
-
-            currentPage = 1;
-            renderPage();
-            renderPagination();
-            
-            itemsContainer.classList.remove('is-filtering');
-        }, 200);
-    }
-
-    function renderPage() {
-        // Clear the container before re-rendering
-        itemsContainer.innerHTML = ''; 
-        
-        noResultsMessage.classList.toggle('hidden', filteredItems.length > 0);
-
-        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-        const endIndex = startIndex + ITEMS_PER_PAGE;
-        const pageItems = filteredItems.slice(startIndex, endIndex);
-
-        // Append only the items for the current page
-        pageItems.forEach(card => itemsContainer.appendChild(card));
-    }
-
-    function renderPagination() {
-        paginationContainer.innerHTML = '';
-        const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE);
-
-        if (totalPages <= 1) return;
-
-        const createPageButton = (page) => {
-            const button = document.createElement('button');
-            button.className = 'pagination-btn';
-            button.textContent = page;
-            if (page === currentPage) {
-                button.classList.add('active');
-            }
-            button.addEventListener('click', () => goToPage(page));
-            paginationContainer.appendChild(button);
-        };
-
-        const prevButton = document.createElement('button');
-        prevButton.innerHTML = '&laquo; Prev';
-        prevButton.className = 'pagination-btn';
-        prevButton.disabled = currentPage === 1;
-        prevButton.addEventListener('click', () => goToPage(currentPage - 1));
-        paginationContainer.appendChild(prevButton);
-
-        for (let i = 1; i <= totalPages; i++) {
-            createPageButton(i);
-        }
-
-        const nextButton = document.createElement('button');
-        nextButton.innerHTML = 'Next &raquo;';
-        nextButton.className = 'pagination-btn';
-        nextButton.disabled = currentPage === totalPages;
-        nextButton.addEventListener('click', () => goToPage(currentPage + 1));
-        paginationContainer.appendChild(nextButton);
-    }
-
-    function goToPage(pageNumber) {
-        if (pageNumber < 1 || pageNumber > Math.ceil(filteredItems.length / ITEMS_PER_PAGE)) return;
-        
-        itemsContainer.classList.add('is-filtering');
-        setTimeout(() => {
-            currentPage = pageNumber;
-            renderPage();
-            renderPagination();
-            itemsContainer.classList.remove('is-filtering');
-        }, 200);
-    }
-
-    renderPage();
-    renderPagination();
-
-    searchInput.addEventListener('input', applyFiltersAndSort);
-    categoryFilter.addEventListener('change', applyFiltersAndSort);
-    locationFilter.addEventListener('change', applyFiltersAndSort);
-    sortFilter.addEventListener('change', applyFiltersAndSort); // NEW
-    typeFilterButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            typeFilterButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            applyFiltersAndSort();
-        });
-    });
-});
-</script>
-{% endblock %}
+    // Slight animated shimmer across left heading
+    (function(){
+      const h = document.querySelector('.left h1');
+      setInterval(()=>{
+        h.style.textShadow = '0 8px 40px rgba(124,58,237,0.12), 0 2px 8px rgba(6,182,212,0.06)';
+        setTimeout(()=>{h.style.textShadow='none'},700);
+      },2200);
+    })();
+  </script>
+</body>
+</html>
