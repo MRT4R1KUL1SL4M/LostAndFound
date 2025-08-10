@@ -1,0 +1,9 @@
+Flask
+Flask-SQLAlchemy
+PyMySQL
+werkzeug
+Flask-Mail
+Pillow
+disposable-email-domains
+certifi
+gunicorn

@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block title %}Announcements{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-white">Announcement Archive</h1>
+    </div>
+
+    <div class="space-y-6">
+        {% for ann in announcements %}
+        <div class="bg-gray-800 shadow-lg rounded-lg border border-gray-700 p-6">
+            <p class="text-gray-300">{{ ann.content }}</p>
+            <div class="mt-4 text-xs text-gray-500">
+                <span>Posted by {{ ann.admin_name }} on {{ ann.created_at | bst }}</span>
+            </div>
+        </div>
+        {% else %}
+        <div class="text-center py-16">
+            <i class="fa fa-bullhorn text-5xl text-gray-600 mb-4"></i>
+            <h3 class="text-xl font-semibold text-white">No announcements found.</h3>
+            <p class="text-gray-500 mt-2">There are no past announcements to show.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

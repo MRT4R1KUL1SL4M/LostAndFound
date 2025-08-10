@@ -1,0 +1,18 @@
+{% extends "admin/admin_layout.html" %}
+{% block title %}Edit Announcement{% endblock %}
+{% block header_title %}Edit Announcement{% endblock %}
+
+{% block admin_content %}
+<div class="max-w-2xl mx-auto bg-gray-800 p-8 rounded-lg shadow-xl border border-gray-700">
+    <form method="POST" action="{{ url_for('admin_edit_announcement', ann_id=announcement.id) }}">
+        <div class="mb-4">
+            <label for="content" class="block text-sm font-medium text-gray-300">Announcement Text</label>
+            <textarea name="content" id="content" rows="5" required class="mt-1 w-full rounded-lg bg-gray-700 border-gray-600 text-white p-3 focus:ring-2 focus:ring-teal-500">{{ announcement.content }}</textarea>
+        </div>
+        <div class="flex justify-end gap-4">
+            <a href="{{ url_for('manage_announcements') }}" class="px-5 py-2.5 rounded-lg bg-gray-600 hover:bg-gray-700 text-white font-semibold">Cancel</a>
+            <button type="submit" class="bg-teal-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-teal-700">Save Changes</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

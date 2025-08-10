@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+{% block title %}Conversation about {{ claim_info.item_title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="mb-6">
+        <a href="{{ url_for('inbox') }}" class="inline-flex items-center text-teal-400 hover:text-teal-300">
+            <i class="fa fa-arrow-left mr-2"></i>
+            Back to Inbox
+        </a>
+    </div>
+
+    <div class="bg-gray-800 shadow-2xl rounded-lg border border-gray-700 flex flex-col h-[75vh]">
+        <!-- Header -->
+        <div class="p-4 border-b border-gray-700 flex items-center space-x-3 bg-gray-800/50 backdrop-blur-sm">
+            <div class="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0">
+                {{ other_user_name[0] if other_user_name else 'U' }}
+            </div>
+            <div>
+                <h2 class="text-lg font-bold text-white">Conversation with {{ other_user_name }}</h2>
+                <a href="{{ url_for('item_details', item_id=claim_info.item_id) }}" class="text-xs text-teal-400 hover:underline">
+                    Regarding item: {{ claim_info.item_title }}
+                </a>
+            </div>
+        </div>
+
+        <!-- Messages Area -->
+        <div id="message-area" class="p-6 flex-grow overflow-y-auto flex flex-col space-y-2 bg-gray-900/50" style="background-image: radial-gradient(#4a5568 1px, transparent 1px); background-size: 20px 20px;">
+            {% for message in messages %}
+                {% if message.sender_id == session.user_id %}
+                <!-- My Message (Right) -->
+                <div class="flex items-end justify-end">
+                    <div class="flex flex-col items-end">
+                        <div class="bg-teal-600 text-white p-3 rounded-lg rounded-br-none max-w-lg shadow-md">
+                            <p class="text-sm">{{ message.body }}</p>
+                        </div>
+                        <!-- UPDATED: Timestamp is now always visible -->
+                        <div class="text-xs text-gray-500 mt-1 transition">{{ message.sent_at | bst }}</div>
+                    </div>
+                </div>
+                {% else %}
+                <!-- Other's Message (Left) -->
+                <div class="flex items-end justify-start space-x-2">
+                     <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0">
+                        {{ other_user_name[0] if other_user_name else 'U' }}
+                    </div>
+                    <div class="flex flex-col items-start">
+                        <div class="bg-gray-700 text-gray-300 p-3 rounded-lg rounded-bl-none max-w-lg shadow-md">
+                            <p class="text-sm">{{ message.body }}</p>
+                        </div>
+                        <!-- UPDATED: Timestamp is now always visible -->
+                        <div class="text-xs text-gray-500 mt-1 transition">{{ message.sent_at | bst }}</div>
+                    </div>
+                </div>
+                {% endif %}
+            {% else %}
+            <div class="text-center text-gray-500 self-center flex-grow flex items-center justify-center">
+                <p>No messages yet. Start the conversation!</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Message Input Form -->
+        <div class="p-4 border-t border-gray-700 bg-gray-800">
+            <form method="POST" action="{{ url_for('conversation', claim_id=claim_info.claim_id) }}">
+                <div class="flex items-center space-x-3">
+                    <textarea name="body" class="flex-grow bg-gray-700 border-gray-600 text-white rounded-lg p-3 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition" rows="1" placeholder="Type your message..." required oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"></textarea>
+                    <button type="submit" class="bg-teal-600 text-white rounded-full p-3 h-12 w-12 flex-shrink-0 flex items-center justify-center hover:bg-teal-700 transition transform hover:scale-110">
+                        <i class="fa fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Scroll to the bottom of the message area on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageArea = document.getElementById('message-area');
+        if (messageArea) {
+            messageArea.scrollTop = messageArea.scrollHeight;
+        }
+    });
+</script>
+{% endblock %}

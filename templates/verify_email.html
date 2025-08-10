@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block title %}Verify Your Email{% endblock %}
+
+{% block content %}
+<div class="min-h-[85vh] flex items-center justify-center p-4 bg-gray-900">
+    <div class="w-full max-w-md">
+        <div class="bg-gray-800 rounded-2xl shadow-2xl p-8 border border-gray-700">
+            <div class="text-center">
+                <h2 class="text-2xl font-bold text-white">Check Your Inbox</h2>
+                <p class="text-gray-400 mt-2">We've sent a 6-digit verification code to <span class="font-semibold text-teal-400">{{ email }}</span>.</p>
+                <p class="text-gray-500 text-sm mt-1">Please enter the code below to complete your registration.</p>
+            </div>
+            <form action="{{ url_for('verify_email') }}" method="POST" class="mt-8 space-y-6">
+                <div>
+                    <label for="code" class="block text-sm font-medium text-gray-300 mb-1">Verification Code</label>
+                    <input id="code" name="code" type="text" inputmode="numeric" pattern="\d{6}" maxlength="6" required
+                           class="block w-full text-center tracking-[1em] text-2xl font-bold rounded-lg bg-gray-700 border-gray-600 text-white py-3 px-4 shadow-sm focus:ring-2 focus:ring-teal-500"
+                           placeholder="______">
+                </div>
+                <div>
+                    <button type="submit"
+                            class="w-full flex justify-center rounded-lg bg-teal-600 px-3 py-3 text-md font-semibold text-white shadow-lg hover:bg-teal-700">
+                        Verify & Create Account
+                    </button>
+                </div>
+            </form>
+             <div class="text-center mt-6">
+                <p class="text-sm text-gray-500">
+                    Didn't receive the code? 
+                    <a href="{{ url_for('register') }}" class="font-semibold text-teal-400 hover:underline">Try registering again.</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

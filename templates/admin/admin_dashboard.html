@@ -1,0 +1,103 @@
+{% extends "admin/admin_layout.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block header_title %}Dashboard Overview{% endblock %}
+
+{% block admin_content %}
+<div>
+    <!-- Header Section -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-white">Admin Dashboard</h1>
+        <p class="text-gray-400 mt-1">Welcome back, {{ session.full_name }}! Here's an overview of the system.</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg shadow-xl border border-gray-700 p-6 group transition-all duration-300 transform hover:-translate-y-1 hover:shadow-blue-500/20">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-lg font-medium text-gray-400">Total Users</p>
+                    <p class="mt-1 text-4xl font-bold text-white">{{ stats.users }}</p>
+                </div>
+                <div class="bg-blue-500/20 text-blue-300 p-4 rounded-full">
+                    <i class="fa fa-users fa-2x"></i>
+                </div>
+            </div>
+            <a href="{{ url_for('manage_users') }}" class="mt-4 inline-block text-sm text-blue-400 group-hover:underline">Manage users &rarr;</a>
+        </div>
+
+        <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg shadow-xl border border-gray-700 p-6 group transition-all duration-300 transform hover:-translate-y-1 hover:shadow-green-500/20">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-lg font-medium text-gray-400">Total Items</p>
+                    <p class="mt-1 text-4xl font-bold text-white">{{ stats.item_count }}</p>
+                </div>
+                <div class="bg-green-500/20 text-green-300 p-4 rounded-full">
+                    <i class="fa fa-box fa-2x"></i>
+                </div>
+            </div>
+            <a href="{{ url_for('manage_items') }}" class="mt-4 inline-block text-sm text-green-400 group-hover:underline">Manage items &rarr;</a>
+        </div>
+
+        <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg shadow-xl border border-gray-700 p-6 group transition-all duration-300 transform hover:-translate-y-1 hover:shadow-yellow-500/20">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-lg font-medium text-gray-400">Pending Claims</p>
+                    <p class="mt-1 text-4xl font-bold text-white">{{ stats.pending_claims }}</p>
+                </div>
+                <div class="bg-yellow-500/20 text-yellow-300 p-4 rounded-full">
+                    <i class="fa fa-gavel fa-2x"></i>
+                </div>
+            </div>
+            <a href="{{ url_for('manage_claims') }}" class="mt-4 inline-block text-sm text-yellow-400 group-hover:underline">Review claims &rarr;</a>
+        </div>
+
+        <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg shadow-xl border border-gray-700 p-6 group transition-all duration-300 transform hover:-translate-y-1 hover:shadow-purple-500/20">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-lg font-medium text-gray-400">Email Logs</p>
+                    <p class="mt-1 text-4xl font-bold text-white">{{ stats.email_logs }}</p>
+                </div>
+                <div class="bg-purple-500/20 text-purple-300 p-4 rounded-full">
+                    <i class="fa fa-envelope-open-text fa-2x"></i>
+                </div>
+            </div>
+            <a href="{{ url_for('admin_email_logs') }}" class="mt-4 inline-block text-sm text-purple-400 group-hover:underline">View logs &rarr;</a>
+        </div>
+    </div>
+
+    <!-- Recent Activity Section with Real Data -->
+    <div class="mt-8 bg-gray-800 rounded-lg shadow-xl border border-gray-700 p-6">
+        <h2 class="text-xl font-semibold text-white mb-4">Recent Activity</h2>
+        <div class="space-y-4">
+            {% for activity in recent_activity %}
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center
+                    {% if activity.type == 'claim' %} bg-yellow-500/20 text-yellow-300
+                    {% elif activity.type == 'item' %} bg-green-500/20 text-green-300
+                    {% elif activity.type == 'user' %} bg-blue-500/20 text-blue-300 {% endif %}">
+                    <i class="fa 
+                        {% if activity.type == 'claim' %} fa-gavel
+                        {% elif activity.type == 'item' %} fa-box
+                        {% elif activity.type == 'user' %} fa-user-plus {% endif %}"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-white">
+                        {% if activity.type == 'claim' %}
+                            New claim by <strong>{{ activity.user_name }}</strong> for '{{ activity.item_title }}'
+                        {% elif activity.type == 'item' %}
+                            New item found by <strong>{{ activity.user_name }}</strong>: '{{ activity.item_title }}'
+                        {% elif activity.type == 'user' %}
+                            New user registered: <strong>{{ activity.user_name }}</strong>
+                        {% endif %}
+                    </p>
+                    <p class="text-xs text-gray-500">{{ activity.timestamp | bst }}</p>
+                </div>
+            </div>
+            {% else %}
+            <p class="text-gray-500">No recent activity found.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
